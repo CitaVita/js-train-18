@@ -7,17 +7,27 @@
  */
 function checkData(data) {
   // Якщо об'єкт не пустий повертаємо дані
+  if (Object.keys(data).length > 0) {
+    return data;
+  } else {
   // Інакше створюємо помилку,в якості тексту помилки ми використовуємо рядок "Об'єкт пустий".
   // Якщо виникла помилка, повертаємо її повідомлення.
+throw new Error( "Об'єкт пустий");
+}
 }
 
 console.log("Завдання: 1 ==============================");
-
+try {
 console.log(checkData({}));
-// Виведе Об'єкт пустий
-console.log(checkData({ name: "John", age: 30, city: "New York" }));
-// Виведе { name: 'John', age: 30, city: 'New York' }
+} catch (error) {
+  console.log(error.mesage); // Виведе Об'єкт пустий
+}
 
+try {
+console.log(checkData({ name: "John", age: 30, city: "New York" }));
+} catch (error) {
+  console.log(error.message); // Виведе { name: 'John', age: 30, city: 'New York' }
+}
 // Завдання 2
 /**
  * Функція `parseJson` намагається аналізувати вхідний JSON-рядок.
@@ -26,8 +36,14 @@ console.log(checkData({ name: "John", age: 30, city: "New York" }));
  *  jsonStr - JSON-рядок для аналізу.
  */
 function parseJson(jsonStr) {
+  try {
   // Спроба розпарсити JSON-рядок.
+  return JSON.parse(jsonStr);
+  } catch (error) {
   // Якщо рядок має невірний формат, виникне помилка, яку ми обробляємо у блоку catch.
+  return error.message;
+  }
+
   // Повертаємо отриманий об'єкт
   // Якщо виникла помилка, повертаємо її повідомлення.
 }
@@ -54,12 +70,22 @@ console.log(parseJson(invalidJson));
  */
 function getAge(age) {
   // Спроба отримати вік користувача.
+  try {
   // Якщо вік менше 0, виникне помилка, яку ми обробляємо у блоку catch.
+  if (age < 0) {
   // Генеруємо помилку, якщо вік менше 0 з повідомленням Вік не може бути менше 0!.
+  const error = new Error("Вік не може бути менше 0!");
   // До помилки дадаємо властивість name зі значенням "AgeError"
+  error.name = "AgeError";
   // Викидаємо помилку
+  throw error;
+  }
   // Якщо помилки не має повертаємо рядок `Вік користувача: ${age}`
+  return `Вік користувача: ${age}`;
+} catch (error) {
   // Якщо виникла помилка, повертаємо об'єкт з name та message помилки.
+return { erro: error.message, name: error.name};
+}
 }
 console.log("Завдання: 3 ==============================");
 
